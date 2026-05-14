@@ -1,17 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LL-WCB CSV File Reader</title>
-        <link rel="stylesheet" href="https://pyscript.net/releases/2025.7.3/core.css" />
-        <script type="module" src="https://pyscript.net/releases/2025.7.3/core.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel Filter Tool</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
 
-    </head>
-    <body>
-        <h2>Select a CSV file to display its contents:</h2>
-        <input type="file" id="csv-file" accept=".csv" />
-        <div id="output"></div>
-        <py-script src="main.py"></py-script>
-    </body>
+<div class="container">
+
+  <header>
+    <p class="eyebrow">//LL-WCB spreadsheet utility</p>
+    <h1>Excel <em>Filter</em><br>& Export</h1>
+    <p class="subtitle">Upload a workbook, pick the columns you want, and export a clean file — only checked rows and selected columns.</p>
+  </header>
+
+  <!-- Drop Zone -->
+  <div class="drop-zone" id="dropZone">
+    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv">
+    <span class="drop-icon">📂</span>
+    <p class="drop-label">Drop your Excel file here</p>
+    <p class="drop-hint">or click to browse — .xlsx / .xls / .csv</p>
+  </div>
+
+  <div class="file-badge" id="fileBadge">
+    <span>📄</span>
+    <span id="fileName"></span>
+  </div>
+
+  <!-- Column Picker -->
+  <div class="section" id="colSection">
+    <div class="section-header">
+      <span class="section-title">Choose columns</span>
+      <span class="section-meta" id="colMeta"></span>
+    </div>
+
+    <div class="quick-bar">
+      <button class="quick-btn" onclick="selectAll()">SELECT ALL</button>
+      <button class="quick-btn" onclick="selectNone()">DESELECT ALL</button>
+    </div>
+
+    <div class="col-grid" id="colGrid"></div>
+
+    <p class="note">
+      <span>Note:</span> The <strong>check</strong> column (column A) controls which rows are exported — any row with a non-empty value in that column will be included. It will always be excluded from the output.
+    </p>
+
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-val" id="statTotalRows">—</span>
+        <span class="stat-label">Total rows</span>
+      </div>
+      <div class="divider"></div>
+      <div class="stat">
+        <span class="stat-val" id="statCheckedRows">—</span>
+        <span class="stat-label">Checked rows</span>
+      </div>
+      <div class="divider"></div>
+      <div class="stat">
+        <span class="stat-val blue" id="statSelCols">—</span>
+        <span class="stat-label">Selected columns</span>
+      </div>
+    </div>
+
+    <button class="export-btn" id="exportBtn" onclick="exportFile()">EXPORT FILTERED EXCEL</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
 </html>
